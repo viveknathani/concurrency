@@ -20,30 +20,30 @@ void* car(void *nothing) {
 
 void* filler(void *nothing) {
 	for (int i = 0; i < 5; ++i) {
-			pthread_mutex_lock(&lock);
-			fuel += 15;
-			printf("Filler %d\n", fuel);
-			pthread_mutex_unlock(&lock);
+		pthread_mutex_lock(&lock);
+		fuel += 15;
+		printf("Filler %d\n", fuel);
+		pthread_mutex_unlock(&lock);
   		pthread_cond_signal(&checker);
 	  	sleep(1);
   }
-	return nothing;
+  return nothing;
 } 
 
 int main() {
 	pthread_t threads[2];
 	for (int i = 0; i < 2; ++i) {
-			if(i % 2) {
-					pthread_create(&threads[i], NULL, filler, NULL);
-			}
-			else {
-					pthread_create(&threads[i], NULL, car, NULL);
-			}
+		if(i % 2) {
+			pthread_create(&threads[i], NULL, filler, NULL);
+    	}
+		else {
+			pthread_create(&threads[i], NULL, car, NULL);
+		}
 	}
 	
 	for (int i = 0; i < 2; ++i) {
-			void *nothing;
-			pthread_join(threads[i], &nothing);
+		void *nothing;
+		pthread_join(threads[i], &nothing);
 	}
 	return 0;
 }
